@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agent 代码分析工具</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #333;
+        }
+        .description {
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #loading {
+            display: none;
+            margin: 20px 0;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>AI Agent 代码分析工具</h1>
+    <div class="description">
+        <p>上传您的代码 ZIP 文件并输入问题描述，系统将分析代码并返回结果。</p>
+    </div>
+
+    <form id="analyzeForm">
+        <div class="form-group">
+            <label for="problem_description">问题描述：</label>
+            <input type="text" id="problem_description" name="problem_description" required>
+        </div>
+        <div class="form-group">
+            <label for="code_zip">代码 ZIP 文件：</label>
+            <input type="file" id="code_zip" name="code_zip" accept=".zip" required>
+        </div>
+        <button type="submit">提交分析</button>
+    </form>
+
+    <div id="loading">
+        <p>正在分析，请稍候...</p>
+    </div>
+
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('analyzeForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const form = e.target;
+            const formData = new FormData(form);
+            const loading = document.getElementById('loading');
+            const resultDiv = document.getElementById('result');
+
+            loading.style.display = 'block';
+            resultDiv.textContent = '';
+
+            try {
+                const response = await fetch('http://localhost:8000/api/analyze', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                resultDiv.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                resultDiv.textContent = `错误: ${error.message}`;
+            } finally {
+                loading.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

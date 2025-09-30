@@ -20,8 +20,8 @@
 
 1. 克隆仓库
    ```bash
-   git clone https://github.com/shupi1/aiagent.git
-   cd aiagent
+   git clone https://github.com/shupi1/aiagent0.git
+   cd aiagent0
 
 2. 配置环境变量
 
@@ -34,8 +34,8 @@ cp .env.example .env
 3. 构建并启动 Docker 容器
 
 ```bash
-docker build -t aiagent .
-docker run -p 8000:8000 --env-file .env aiagent
+docker build -t aiagent0 .
+docker run -p 8000:8000 --env-file .env aiagent0
 ```
 
 4. 访问服务
@@ -46,8 +46,8 @@ docker run -p 8000:8000 --env-file .env aiagent
 ### 示例用法
 
 ```bash
-curl -X POST "http://localhost:8000/api/analyze" \
-  -H "Content-Type: multipart/form-data" \
-  -F "problem_description=实现一个简单的加法函数" \
-  -F "code_zip=@./test_code.zip"
+curl -X POST "http://localhost:8000/api/analyze" ^
+  -H "Content-Type: multipart/form-data" ^
+  -F "problem_description=对文件进行切分" ^
+  -F "code_zip=@./D:/prj/aiagent/test_code.zip"
 ```

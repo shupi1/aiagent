@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 from app.api.endpoints import router as api_router
 import uvicorn
 
@@ -8,9 +9,12 @@ app = FastAPI(
     version="1.0.0"
 )
 
+# 挂载静态文件目录
+app.mount("/static", StaticFiles(directory="static", html=True), name="static")
+
 app.include_router(api_router, prefix="/api")
 
-@app.get("/")
+@app.get("/api")
 async def root():
     return {"message": "代码分析 AI Agent 服务已启动", "docs": "/docs"}
 
