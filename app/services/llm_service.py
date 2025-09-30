@@ -10,7 +10,11 @@ load_dotenv()
 
 class LLMService:
     def __init__(self):
-        self.client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+        # 更新OpenAI客户端配置，添加base_url参数
+        self.client = OpenAI(
+            api_key=os.getenv("OPENAI_API_KEY"),
+            base_url="https://ai.nengyongai.cn/v1"  # 添加第三方平台的base_url
+        )
         if not os.getenv("OPENAI_API_KEY"):
             raise ValueError("OPENAI_API_KEY 环境变量未设置")
 
@@ -54,8 +58,9 @@ class LLMService:
         4. 只返回JSON，不要添加其他解释文字
         """
 
+        # 将模型从"gpt-4"改为"gpt-4o-mini"
         response = self.client.chat.completions.create(
-            model="gpt-4",
+            model="gpt-4o-mini",
             messages=[
                 {"role": "system", "content": "你是一位专业的代码分析专家，擅长分析各种编程语言的代码结构和功能实现。"},
                 {"role": "user", "content": prompt}
@@ -95,8 +100,9 @@ class LLMService:
         只返回测试代码，不要添加其他解释文字。
         """
 
+        # 将模型从"gpt-4"改为"gpt-4o-mini"
         response = self.client.chat.completions.create(
-            model="gpt-4",
+            model="gpt-4o-mini",
             messages=[
                 {"role": "system", "content": "你是一位专业的测试工程师，擅长为各种项目编写单元测试。"},
                 {"role": "user", "content": prompt}
